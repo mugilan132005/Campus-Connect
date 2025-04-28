@@ -454,7 +454,7 @@ body {
     const suggestions = adviceMap[emotion] || ["Sorry, I don’t have advice for that feeling yet."];
 
     suggestions.forEach((tip, index) => {
-      aiMessage(`${index + 1}. ${tip}, 2000`);
+      aiMessage(`${index + 1}. ${tip}`, 2000);
     });
 
     setTimeout(() => {
