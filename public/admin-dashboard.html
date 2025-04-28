@@ -251,7 +251,7 @@
         : `Dear user,\n\nWe have viewed your complaint: "${description}". We are working on it.\n\nRegards,\nCampus Connect Admin`;
 
       try {
-        const res = await fetch('http://localhost:3000/send-email', {
+        const res = await fetch('https://campus-connect-l9cu.onrender.com/send-email', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ to: email, subject, text: body })
