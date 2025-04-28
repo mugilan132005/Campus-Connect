@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    header {
+      background-color: #003366;
+      color: white;
+      padding: 16px;
+      text-align:left;
+      font-size: 24px;
+      font-weight: bold;
+      width: 100%;
+      z-index: 10;
+    }
+    .main {
+      display: flex;
+      flex: 1;
+      height: calc(100vh - 60px);
+    }
+    .sidebar {
+      width: 200px;
+      background: #dceeff;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      padding-top: 60px;
+      box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
+    }
+    .sidebar a {
+      text-decoration: none;
+      color: #003366;
+      padding: 15px 20px;
+      font-size: 16px;
+      border-left: 4px solid transparent;
+      transition: all 0.3s ease;
+    }
+    .sidebar a:hover,
+    .sidebar a.active {
+      background-color: #cce0ff;
+      border-left: 4px solid #003366;
+    }
+    .content {
+      padding: 20px;
+      flex: 1;
+      background-color: #f9f9f9;
+      margin-left: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-y: auto;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+    .tab {
+      margin: 0 15px;
+      padding: 10px 20px;
+      cursor: pointer;
+      background-color: #cce0ff;
+      border: 1px solid #007BFF;
+      border-radius: 5px;
+    }
+    .tab.active {
+      background-color: #3786db;
+      color: white;
+    }
+    .complaints, .concerns {
+      width: 100%;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+    }
+    .complaints.active, .concerns.active {
+      display: flex;
+    }
+    .complaint-section {
+      width: 100%;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+    }
+    .complaint-section.active {
+      display: flex;
+    }
+    #pending-complaints-list,
+    #solved-complaints-list,
+    #concerns-list {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .card {
+      background-color: white;
+      padding: 20px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 600px;
+    }
+    .card h4 {
+      margin: 0;
+      font-size: 18px;
+      color: #333;
+    }
+    .card p {
+      color: #555;
+      margin: 10px 0;
+    }
+    .email-button {
+      margin-top: 10px;
+      margin-right: 10px;
+      padding: 8px 12px;
+      background-color: #3786db;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .email-button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <header>Campus Connect</header>
+  <div class="main">
+    <div class="sidebar">
+      <a href="#" onclick="toggleTab('complaints')">Complaints</a>
+      <a href="#" onclick="toggleTab('concerns')">Concerns</a>
+    </div>
+    <div class="content">
+      <h1>Admin Dashboard</h1>
+      <div class="complaints active" id="complaints">
+        <div class="tabs">
+          <div class="tab active" id="pending-tab" onclick="toggleComplaintView('pending')">Pending Complaints</div>
+          <div class="tab" id="solved-tab" onclick="toggleComplaintView('solved')">Solved Complaints</div>
+        </div>
+        <div id="pending-complaints" class="complaint-section active">
+          <div id="pending-complaints-list"></div>
+        </div>
+        <div id="solved-complaints" class="complaint-section">
+          <div id="solved-complaints-list"></div>
+        </div>
+      </div>
+      <div class="concerns" id="concerns">
+        <h2>Concerns</h2>
+        <div id="concerns-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js';
+    import { getFirestore, collection, getDocs } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js';
+
+    const firebaseConfig = {
+  apiKey: "AIzaSyByoFg70I4TS4nuVnjrpDWQF8rFn6jrpNA",
+  authDomain: "campus-connect-7c1e2.firebaseapp.com",
+  projectId: "campus-connect-7c1e2",
+  storageBucket: "campus-connect-7c1e2.firebasestorage.app",
+  messagingSenderId: "774857265701",
+  appId: "1:774857265701:web:3f314e09c771a419c1e5cc"
+};
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    function createComplaintCard(complaint, email, issueType, description) {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <h4>Issue Type: ${issueType}</h4>
+        <p><strong>Description:</strong> ${description}</p>
+        <p><strong>Location:</strong> ${complaint.location}</p>
+        <p><strong>Submitted by:</strong> ${complaint.userName}</p>
+        <p><strong>Email:</strong> ${complaint.userEmail}</p>
+        <p><strong>Date:</strong> ${complaint.date}</p>
+        <p><strong>Timestamp:</strong> ${complaint.timestamp?.toDate().toLocaleString() ?? 'N/A'}</p>
+        <button class="email-button" onclick="sendEmail('${email}', '${issueType}', \`${description}\`, this, 'viewed')">Send Email as Viewed</button>
+        <button class="email-button" onclick="sendEmail('${email}', '${issueType}', \`${description}\`, this, 'solved')">Send Email as Solved</button>
+      `;
+      return card;
+    }
+
+    async function fetchComplaints() {
+      const pendingList = document.getElementById('pending-complaints-list');
+      pendingList.innerHTML = '';
+      try {
+        const querySnapshot = await getDocs(collection(db, 'complaints'));
+        querySnapshot.forEach((doc) => {
+          const complaint = doc.data();
+          const card = createComplaintCard(complaint, complaint.userEmail, complaint.issueType, complaint.description);
+          pendingList.appendChild(card);
+        });
+      } catch (error) {
+        console.error("Error fetching complaints: ", error);
+      }
+    }
+
+    async function fetchConcerns() {
+      const concernsList = document.getElementById('concerns-list');
+      concernsList.innerHTML = '';
+      try {
+        const querySnapshot = await getDocs(collection(db, 'concerns'));
+        querySnapshot.forEach((doc) => {
+          const concern = doc.data();
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `
+            <h4>Concern Type: ${concern.concernType}</h4>
+            <p><strong>Description:</strong> ${concern.description}</p>
+            <p><strong>Suggestion:</strong> ${concern.suggestion}</p>
+            <p><strong>Timestamp:</strong> ${concern.timestamp?.toDate().toLocaleString() ?? 'N/A'}</p>
+          `;
+          concernsList.appendChild(card);
+        });
+      } catch (error) {
+        console.error("Error fetching concerns: ", error);
+      }
+    }
+
+    window.sendEmail = async function(email, issueType, description, button, type) {
+      const subject = type === 'solved'
+        ? `Your complaint is resolved: ${issueType}`
+        : `Your complaint was viewed: ${issueType}`;
+      const body = type === 'solved'
+        ? `Dear user,\n\nYour complaint: "${description}" has been resolved.\n\nRegards,\nCampus Connect Admin`
+        : `Dear user,\n\nWe have viewed your complaint: "${description}". We are working on it.\n\nRegards,\nCampus Connect Admin`;
+
+      try {
+        const res = await fetch('http://localhost:3000/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ to: email, subject, text: body })
+        });
+
+        const result = await res.json();
+        if (res.ok) {
+          alert(`Email sent to ${email}`);
+          if (type === 'solved') {
+            const card = button.parentElement;
+            const solvedList = document.getElementById('solved-complaints-list');
+            const pendingList = document.getElementById('pending-complaints-list');
+            pendingList.removeChild(card);
+            card.querySelectorAll('.email-button').forEach(btn => btn.remove());
+            solvedList.appendChild(card);
+          }
+        } else {
+          alert(`Failed to send email: ${result.error}`);
+        }
+      } catch (error) {
+        console.error('Error sending email:', error);
+        alert('Error sending email. Check console for details.');
+      }
+    };
+
+    window.toggleTab = function(tab) {
+      document.getElementById('complaints').classList.remove('active');
+      document.getElementById('concerns').classList.remove('active');
+      document.querySelectorAll('.sidebar a').forEach(el => el.classList.remove('active'));
+      document.querySelector(`.sidebar a[onclick*="${tab}"]`).classList.add('active');
+      if (tab === 'complaints') {
+        document.getElementById('complaints').classList.add('active');
+        fetchComplaints();
+      } else {
+        document.getElementById('concerns').classList.add('active');
+        fetchConcerns();
+      }
+    };
+
+    window.toggleComplaintView = function(view) {
+      document.getElementById('pending-tab').classList.remove('active');
+      document.getElementById('solved-tab').classList.remove('active');
+      document.getElementById('pending-complaints').classList.remove('active');
+      document.getElementById('solved-complaints').classList.remove('active');
+      document.getElementById(`${view}-tab`).classList.add('active');
+      document.getElementById(`${view}-complaints`).classList.add('active');
+    };
+
+    fetchComplaints();
+  </script>
+</body>
+</html>

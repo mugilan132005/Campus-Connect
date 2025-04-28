@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Complaint Form - Campus Connect</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <script type="module">
+    // Firebase imports as modules
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+
+    // Your Firebase config (REPLACE with your actual config)
+    const firebaseConfig = {
+  apiKey: "AIzaSyByoFg70I4TS4nuVnjrpDWQF8rFn6jrpNA",
+  authDomain: "campus-connect-7c1e2.firebaseapp.com",
+  projectId: "campus-connect-7c1e2",
+  storageBucket: "campus-connect-7c1e2.firebasestorage.app",
+  messagingSenderId: "774857265701",
+  appId: "1:774857265701:web:3f314e09c771a419c1e5cc"
+};
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // Handle form submission after user is logged in
+    window.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('complaint-form');
+      const dropdownBtn = document.querySelector('.dropdown-btn');
+      const dropdownContent = document.getElementById('dropdown-content');
+      const issueTypeInput = document.getElementById('issueType');
+      const otherInput = document.getElementById('otherInput');
+
+      function toggleDropdown() {
+        dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+      }
+
+      document.querySelectorAll('.dropdown-item').forEach(item => {
+        item.addEventListener('click', function () {
+          const value = this.getAttribute('data-value');
+          dropdownBtn.textContent = value;
+          issueTypeInput.value = value;
+          dropdownContent.style.display = 'none';
+          if (value === 'Other') {
+            otherInput.classList.remove('hidden');
+          } else {
+            otherInput.classList.add('hidden');
+          }
+        });
+      });
+
+      window.addEventListener('click', function (e) {
+        if (!document.getElementById('dropdown').contains(e.target)) {
+          dropdownContent.style.display = 'none';
+        }
+      });
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const issueType = issueTypeInput.value;
+        const otherIssue = document.querySelector('input[name="otherIssue"]').value.trim();
+        const location = document.getElementById('location').value;
+        const date = document.getElementById('date').value;
+        const description = document.getElementById('description').value;
+        const finalIssueType = issueType === 'Other' && otherIssue ? otherIssue : issueType;
+
+        const user = auth.currentUser;
+
+        if (!user) {
+          alert("You must be logged in to submit a complaint.");
+          return;
+        }
+
+        const complaint = {
+          issueType: finalIssueType,
+          location: location,
+          date: date,
+          description: description,
+          userEmail: user.email,
+          userName: user.displayName || "Anonymous",
+          userId: user.uid,
+          timestamp: serverTimestamp()
+        };
+
+        try {
+          await addDoc(collection(db, 'complaints'), complaint);
+          alert("Complaint submitted successfully!");
+          form.reset();
+          dropdownBtn.textContent = "Select issue type";
+          issueTypeInput.value = '';
+          otherInput.classList.add('hidden');
+        } catch (error) {
+          console.error("Error submitting complaint:", error);
+          alert("Failed to submit complaint. Please try again.");
+        }
+      });
+    });
+
+    // Toggle dropdown exposed globally
+    window.toggleDropdown = () => {
+      document.getElementById('dropdown-content').style.display =
+        document.getElementById('dropdown-content').style.display === 'block' ? 'none' : 'block';
+    };
+  </script>
+
+  <style>
+    /* your existing CSS styles */
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f2f5f9;
+    }
+
+    header {
+      background-color: #003366;
+      color: white;
+      padding: 20px 40px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .logout-container {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    .logout-logo {
+      font-size: 24px;
+      color: white;
+      margin-right: 5px;
+    }
+
+    .logout-text {
+      color: white;
+      font-size: 16px;
+    }
+
+    .container {
+      margin: 40px auto;
+      width: 95%;
+      max-width: 1000px;
+      background: white;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+      background: #dceeff;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #003366;
+    }
+
+    label {
+      display: block;
+      margin-top: 20px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+
+    textarea {
+      resize: vertical;
+      height: 100px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    button {
+      margin-top: 30px;
+      width: 100%;
+      padding: 14px;
+      background-color: #004080;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0059b3;
+    }
+
+    .dropdown {
+      position: relative;
+      margin-top: 10px;
+    }
+
+    .dropdown-btn {
+      padding: 12px;
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .dropdown-content {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      max-height: 250px;
+      overflow-y: auto;
+      z-index: 999;
+      display: none;
+    }
+
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .dropdown-item:hover {
+      background-color: #f0f0f0;
+    }
+
+    .dropdown-item img {
+      width: 24px;
+      height: 24px;
+    }
+
+  </style>
+</head>
+<body>
+
+<header>Campus Connect</header>
+<div class="logout-container" onclick="window.location.href='logout.html'">
+  <i class="fas fa-sign-out-alt logout-logo"></i>
+  <div class="logout-text">Logout</div>
+</div>
+
+<div class="container">
+  <h2>Complaint Form</h2>
+
+  <form id="complaint-form">
+    <label>Type of Issue</label>
+    <div class="dropdown" id="dropdown">
+      <div class="dropdown-btn" onclick="toggleDropdown()">Select issue type</div>
+      <div class="dropdown-content" id="dropdown-content">
+        <div class="dropdown-item" data-value="Fan"><img src="https://img.icons8.com/ios/50/fan.png"/> Fan</div>
+        <div class="dropdown-item" data-value="Water"><img src="https://img.icons8.com/ios/50/water.png"/> Water</div>
+        <div class="dropdown-item" data-value="Electricity"><img src="https://img.icons8.com/ios/50/lightning-bolt.png"/> Electricity</div>
+        <div class="dropdown-item" data-value="Hostel"><img src="https://img.icons8.com/ios/50/building.png"/> Hostel</div>
+        <div class="dropdown-item" data-value="Furniture"><img src="https://img.icons8.com/ios/50/chair.png"/> Furniture</div>
+        <div class="dropdown-item" data-value="Parking"><img src="https://img.icons8.com/ios/50/parking.png"/> Parking</div>
+        <div class="dropdown-item" data-value="Canteen"><img src="https://img.icons8.com/ios/50/meal.png"/> Canteen</div>
+        <div class="dropdown-item" data-value="Other"><img src="https://img.icons8.com/ios/50/help.png"/> Other</div>
+      </div>
+      <input type="hidden" name="issueType" id="issueType">
+    </div>
+
+    <div id="otherInput" class="hidden">
+      <label>Please specify the issue</label>
+      <input type="text" name="otherIssue" placeholder="Type of issue">
+    </div>
+
+    <label for="location">Location of the Issue:</label>
+    <input type="text" id="location" name="location" placeholder="E.g., Hostel Room 203" required>
+
+    <label for="date">Date it Happened:</label>
+    <input type="date" id="date" name="date" required>
+
+    <label for="description">Description:</label>
+    <textarea id="description" name="description" placeholder="Describe the issue in detail..." required></textarea>
+
+    <button type="submit">Submit Complaint</button>
+  </form>
+</div>
+
+</body>
+</html>

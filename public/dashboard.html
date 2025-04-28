@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Campus Connect - Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #eef3f8;
+    }
+
+    .header {
+      background-color: #003366;
+      color: white;
+      padding: 20px 40px;
+      font-size: 22px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logout-container {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    /* Logo styling */
+    .logout-logo {
+      font-size: 24px;
+      color: white;
+      margin-right: 5px;
+    }
+
+    .logout-text {
+      color: white;
+      font-size: 16px;
+    }
+
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .main-content h1 {
+      color: #003366;
+      margin-bottom: 10px;
+    }
+
+    .main-content p {
+      max-width: 600px;
+      margin-bottom: 30px;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .form-box {
+      background: #dceeff;
+      border-radius: 12px;
+      width: 70%;
+      max-width: 700px;
+      padding: 25px;
+      margin-bottom: 30px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      display: flex;              /* new */
+      flex-direction: column;     /* new */
+      align-items: center;        /* new: horizontal centering */
+      text-align: center;
+    }
+
+    .form-box:hover {
+      transform: scale(1.02);
+    }
+
+    .form-box h2 {
+      color: #004080;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .form-box p {
+      color: #555;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div>Campus Connect</div>
+    <div class="logout-container" onclick="window.location.href='logout.html'">
+      <i class="fas fa-sign-out-alt logout-logo"></i>
+      <div class="logout-text">Logout</div>
+    </div>
+  </div>
+    <div>
+      <span id="welcome-msg"></span>
+      
+    </div>
+  </div>
+
+  <div class="main-content">
+    <h1>Welcome to Campus Connect</h1>
+    <p>Here you can raise any issue or share your thoughts with us. Use the complaint form to report problems regarding campus facilities, and the concern form for sharing any mental health or academic concerns.</p>
+
+    <div class="form-box" onclick="window.location.href='complaint-form.html'">
+      <h2>Complaint Form</h2>
+      <p>Submit issues related to electricity, water, classroom maintenance, and other facilities.</p>
+    </div>
+
+    <div class="form-box" onclick="window.location.href='concern-form.html'">
+      <h2>Concern Form</h2>
+      <p>Share your personal or academic concerns. We're here to listen and help.</p>
+    </div>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+
+  <!-- Your Firebase setup (firebase.initializeApp etc.) -->
+  <script src="firebase-setup.js"></script>
+
+
+  </script>
+
+</body>
+</html>

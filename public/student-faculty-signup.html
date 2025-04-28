@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student/Faculty Login</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f2f5;
+      height: 100vh;
+    }
+
+    .header-bar {
+      background-color: #003366;
+      color: white;
+      padding: 20px 40px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: calc(100vh - 60px); /* subtract header height */
+    }
+
+    .login-box {
+      background: #dceeff; /* light blue */
+      padding: 60px 80px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      width: 350px;
+      text-align: center;
+    }
+
+    .login-box h2 {
+      margin-bottom: 20px;
+      color: #003366;
+    }
+
+    input[type="email"], input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      width: 108%;
+      padding: 15px;
+      background-color: #004080;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      margin-top: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      display: block;
+    }
+
+    button:hover {
+      background-color: #0059b3;
+    }
+
+    .toggle-link {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #333;
+    }
+
+    .toggle-link span {
+      color: #004080;
+      cursor: pointer;
+      font-weight: bold;
+    }
+  </style>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-auth-compat.js"></script>
+</head>
+<body>
+
+  <div class="header-bar">Campus Connect</div>
+
+  <div class="container">
+    <div class="login-box">
+      <h2 id="form-title">Create Account</h2>
+      <form id="login-form">
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button type="submit" id="submit-button">Sign Up</button>
+      </form>
+      <div class="extra-options">
+        <p>Already have an account? <a href="login.html">Login Here</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="signup.js"></script>
+
+</body>
+</html>

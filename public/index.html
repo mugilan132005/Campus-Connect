@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Campus Connect</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f6f9;
+      min-height: 100vh;
+    }
+
+    .top-header {
+      background-color: #f4f6f9;
+      padding: 30px 40px;
+    }
+
+    .top-header h1 {
+      font-family: 'Inter', sans-serif; /* Changed font family to match About Us header */
+      font-size: 40px;
+      color: rgb(6, 6, 33);
+      font-weight: bold;
+      font-style: normal; /* Ensures the font is not italic */
+    }
+
+    .about-heading {
+      background-color: #dceeff;
+      padding: 100px 40px;
+      font-size: 32px;
+      font-weight: bold;
+      color: #003366;
+      text-align: center;
+    }
+
+    .about-section {
+      padding: 20px 30px;
+      max-width: 800px;
+      margin: 0 auto 30px auto;
+      text-align: center;
+      background: none;
+    }
+
+    .about-section p {
+      font-size: 17px;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .full-hr {
+      width: 100%;
+      border: none;
+      height: 3px;
+      background-color: black;
+      margin: 40px 0;
+    }
+
+    .login-options {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    .login-card {
+      width: 220px;
+      text-align: center;
+      cursor: pointer;
+      border-radius: 12px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      background-color: white;
+      padding: 10px;
+    }
+
+    .login-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .login-card img {
+      width: 100%;
+      height: 160px;
+      border-radius: 12px;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+
+    .login-card:hover img {
+      transform: scale(1.05);
+    }
+
+    .login-label {
+      margin-top: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #003366;
+    }
+
+    @media (max-width: 900px) {
+      .login-options {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .about-section {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-header">
+    <h1>Campus Connect</h1>
+  </div>
+
+  <div class="about-heading">About Us</div>
+
+  <div class="about-section">
+    <p>Welcome to Campus Connect, your digital bridge to a smarter and more connected university life. This platform fosters seamless communication between students, faculty, and administrators.</p>
+    <p>With Campus Connect, experience a streamlined system for feedback, updates, and collaborations — all in one place.</p>
+  </div>
+
+  <hr class="full-hr" />
+
+  <div class="login-options">
+    <!-- Student/Faculty -->
+    <div class="login-card" onclick="location.href='student-faculty-signup.html'">
+      <img src="images/studentlogin.jpg" alt="Student/Faculty">
+      <div class="login-label"></div>
+    </div>
+
+    <!-- Admin -->
+    <div class="login-card" onclick="location.href='admin-login.html'">
+      <img src="images/adminlogin.jpg" alt="Admin">
+      <div class="login-label"></div>
+    </div>
+  </div>
+
+</body>
+</html>

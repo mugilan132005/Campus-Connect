@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Login - Campus Connect</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #eef3f8;
+    }
+
+    /* Header bar at the top */
+    .header-bar {
+      background-color: #003366;
+      color: white;
+      padding: 20px 40px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    /* Center login box in remaining space */
+    .main-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: calc(100vh - 80px); /* Adjust height for header */
+    }
+
+    /* Login box styling */
+    .login-container {
+      background-color: white;
+      padding: 50px 80px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      background: #dceeff; /* light blue */
+    }
+
+    .login-container h2 {
+      margin-bottom: 20px;
+      color: #003366;
+      text-align: center;
+    }
+
+    .login-container label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .login-container input {
+      width: 100%;
+      padding: 15px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    .login-container button {
+      width: 100%;
+      padding: 10px;
+      background-color: #003366;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .login-container button:hover {
+      background-color: #005299;
+    }
+
+    .error-message {
+      color: red;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header Bar -->
+  <div class="header-bar">
+    Campus Connect
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="main-content">
+    <div class="login-container">
+      <h2>Admin Login</h2>
+
+      <div id="error-message" class="error-message" style="display: none;">
+        Wrong username or password.
+      </div>
+
+      <form id="admin-login-form">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" placeholder="Enter username" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Enter password" required>
+
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  </div>
+  <script>
+    // Fixed admin credentials (change as needed)
+    const ADMIN_USERNAME = "campusadmin13";
+    const ADMIN_PASSWORD = "admin1318";
+  
+    // Handle form submission
+    document.getElementById("admin-login-form").addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent page reload
+  
+      const enteredUsername = document.getElementById("username").value;
+      const enteredPassword = document.getElementById("password").value;
+  
+      if (enteredUsername === ADMIN_USERNAME && enteredPassword === ADMIN_PASSWORD) {
+        alert("Login successful!");
+        // Redirect or proceed to the admin dashboard
+        window.location.href = "admin-dashboard.html"; // Replace with your actual admin page
+      } else {
+        const errorDiv = document.getElementById("error-message");
+        errorDiv.style.display = "block";
+      }
+    });
+  </script>
+  
+
+</body>
+</html>

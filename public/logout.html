@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Logout - Campus Connect</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #eef3f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .header {
+      position: absolute;
+      top: 20px;
+      left: 30px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #003366;
+    }
+
+    .logout-container {
+      background-color: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .logout-container h2 {
+      color: #003366;
+      margin-bottom: 20px;
+    }
+
+    .logout-container p {
+      margin-bottom: 30px;
+      color: #333;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 12px;
+      background-color: #003366;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #004080;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    Campus Connect
+  </div>
+
+  <div class="logout-container">
+    <h2>You have been logged out</h2>
+    <p>Thank you for using Campus Connect. If you wish to log in again, click the button below.</p>
+    <button onclick="window.location.href='index.html'">Go to Login</button>
+  </div>
+
+</body>
+</html>
