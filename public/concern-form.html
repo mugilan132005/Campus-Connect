@@ -358,7 +358,7 @@ body {
 
     const avatar = document.createElement("div");
     avatar.classList.add("ai-avatar");
-    avatar.innerHTML = '<img src="images/robot.gif" alt="AI Avatar" class="talking" />';
+    avatar.innerHTML = '<img src="/robot.gif" alt="AI Avatar" class="talking" />';
 
     const bubble = document.createElement("div");
     bubble.classList.add("chat-bubble", "ai");
@@ -385,7 +385,7 @@ body {
         chatBox.scrollTop = chatBox.scrollHeight;
         if (i >= words.length) {
           clearInterval(interval);
-          avatar.querySelector("img").src = "images/robot1.png";
+          avatar.querySelector("img").src = "/robot1.png";
         }
       }, 250);
     }, delay);
